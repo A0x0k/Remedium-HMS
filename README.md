@@ -25,6 +25,16 @@
 
 ---
 
+## Engineering Highlights
+
+- **Modular Monolith Architecture**: Decoupled 14-app domain-driven design for superior maintainability, testability, and scalability.
+- **Security-First Engineering**: HIPAA-ready design implementing Fernet encryption for PHI at rest, immutable audit trails, and granular Role-Based Access Control (RBAC).
+- **Production-Grade Infrastructure**: Full lifecycle management using Docker (non-root), Gunicorn, WhiteNoise, and robust GitHub Actions CI/CD pipelines.
+- **Clinical-Grade Complexity**: Implements conflict-aware appointment scheduling, real-time patient monitoring, and ledger-based financial billing systems.
+- **API-First Strategy**: Comprehensive OpenAPI 3.0 documentation via Swagger/ReDoc, supporting enterprise-grade integrations.
+
+---
+
 ## Overview
 
 Remedium HMS is a full-featured hospital management platform designed to handle the real complexities of healthcare operations — from patient admission to discharge, pharmacy dispensing, lab testing, surgery scheduling, and revenue tracking.
