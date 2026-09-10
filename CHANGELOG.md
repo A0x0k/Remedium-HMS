@@ -46,6 +46,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- add engineering highlights to README ([`b6dff88`])
 - Refine billing templates, dashboard views, and minor view updates ([`87e9aef`])
 - add TLS config to nginx.conf and remove stray 1.1 file ([`daa960c`])
 - extract homepage role context helpers and wire PatientBriefSerializer ([`0327738`])
