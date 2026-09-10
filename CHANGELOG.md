@@ -46,6 +46,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- Fix psycopg2 to binary version ([`2a407be`])
 - Fix psycopg2 to binary version ([`8324825`])
 - Fix psycopg2 to binary version ([`559ab66`])
 - add engineering highlights to README ([`b6dff88`])

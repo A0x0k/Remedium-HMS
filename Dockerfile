@@ -7,8 +7,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Set work directory
 WORKDIR /app
 
-# Install dependencies (including curl for healthcheck)
+# Install system dependencies (including what psycopg2-binary needs)
 RUN apt-get update && apt-get install -y \
+    gcc \
+    libpq-dev \
     postgresql-client \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -23,8 +25,7 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p logs staticfiles media
 
-# Collect static files. collectstatic only needs SECRET_KEY; other keys
-# are not used during this phase, so a dummy SECRET_KEY is sufficient.
+# Collect static files
 RUN SECRET_KEY=build-only-secret-key-for-static-collection-not-for-runtime \
     python manage.py collectstatic --noinput
 
@@ -37,5 +38,5 @@ USER appuser
 # Expose port
 EXPOSE 8000
 
-# Run gunicorn with configurable workers
-CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:8000 --workers ${GUNICORN_WORKERS:-4}"]
+# Run gunicorn (using $PORT for Railway compatibility)
+CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${GUNICORN_WORKERS:-4}"]
