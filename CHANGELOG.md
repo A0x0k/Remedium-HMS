@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased] - 2026-07-23
+## [Unreleased] - 2026-09-10
 
 ### Added
 - improve dashboard UX with timestamps, notification bell, and mobile nav ([`0e4aaca`])
@@ -46,6 +46,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- Fix Dockerfile for psycopg2 and Railway port ([`dc5656f`])
+- Fix psycopg2 to binary version ([`2a407be`])
+- Fix psycopg2 to binary version ([`8324825`])
+- Fix psycopg2 to binary version ([`559ab66`])
+- add engineering highlights to README ([`b6dff88`])
+- Refine billing templates, dashboard views, and minor view updates ([`87e9aef`])
+- add TLS config to nginx.conf and remove stray 1.1 file ([`daa960c`])
 - extract homepage role context helpers and wire PatientBriefSerializer ([`0327738`])
 - add pytest step to test job and fix SECRET_KEY length ([`94aa29b`])
 - redesign README with modern layout and professional structure ([`85a8fb5`])
