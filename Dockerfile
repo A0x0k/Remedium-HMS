@@ -27,7 +27,7 @@ RUN mkdir -p logs staticfiles media
 
 # Collect static files (dummy keys for build time only)
 RUN SECRET_KEY=build-only-secret-key-for-static-collection-not-for-runtime \
-    FIELD_ENCRYPTION_KEY=build-only-fernet-key-for-static-collection-not-for-runtime \
+    FIELD_ENCRYPTION_KEY=45q5bvbwTGRv9II1DJ22sgMpdSTP3O8exTXD-piVu3U= \
     python manage.py collectstatic --noinput
 
 # Create non-root user and set permissions
