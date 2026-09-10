@@ -46,6 +46,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- Final Dockerfile fixes for Railway ([`21309bb`])
 - Fix psycopg2 to binary version ([`2673efe`])
 - Fix Dockerfile for psycopg2 and Railway port ([`dc5656f`])
 - Fix psycopg2 to binary version ([`2a407be`])
