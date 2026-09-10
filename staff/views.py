@@ -43,7 +43,7 @@ class DoctorAvailabilityView(
             Staff.objects.filter(role__in=medical_roles, is_active=True)
             .annotate(
                 active_cases_count=Count(
-                    "encounters", filter=Q(encounters__end_time__isnull=True)
+                    "encounter_set", filter=Q(encounter_set__end_time__isnull=True)
                 )
             )
             .prefetch_related("shifts")

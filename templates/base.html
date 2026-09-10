@@ -52,7 +52,7 @@
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'appointments' %}active{% endif %}" href="{% url 'appointment_list' %}"><i class="bi bi-calendar-event me-2"></i> Appointments</a></li>
                             {% if is_hms_admin or is_hms_receptionist %}
                             <li><a class="dropdown-item {% if request.resolver_match.url_name == 'doctor_availability' %}active{% endif %}" href="{% url 'doctor_availability' %}"><i class="bi bi-person-check me-2"></i> Doctor Load</a></li>
-                            <li><a class="dropdown-item {% if request.resolver_match.app_name == 'billing' %}active{% endif %}" href="{% url 'invoice_list' %}"><i class="bi bi-cash-stack me-2"></i> Billing</a></li>
+                            <li><a class="dropdown-item {% if request.resolver_match.app_name == 'billing' %}active{% endif %}" href="{% url 'billing:invoice_list' %}"><i class="bi bi-cash-stack me-2"></i> Billing</a></li>
                             {% endif %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'surgery' %}active{% endif %}" href="{% url 'surgery_list' %}"><i class="bi bi-scissors me-2"></i> Surgery</a></li>
                             {% if is_hms_admin or is_hms_doctor or is_hms_nurse %}

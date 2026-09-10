@@ -104,7 +104,7 @@ def _admin_context(today):
     for i in range(6, -1, -1):
         day = today - timedelta(days=i)
         day_revenue = (
-            Invoice.objects.filter(paid=True, issue_date__date=day).aggregate(
+            Invoice.objects.filter(paid=True, issue_date=day).aggregate(
                 total=Sum("total_amount")
             )["total"]
             or 0

@@ -32,7 +32,7 @@
         <a href="{% url 'patient_history' patient.pk %}" class="btn btn-sm btn-outline-secondary">
             <i class="bi bi-clock-history me-1"></i>History
         </a>
-        <a href="{% url 'invoice_create' %}?patient={{ patient.pk }}" class="btn btn-sm btn-outline-info">
+        <a href="{% url 'billing:invoice_create' %}?patient={{ patient.pk }}" class="btn btn-sm btn-outline-info">
             <i class="bi bi-currency-dollar me-1"></i>Quick Pay
         </a>
         <button type="button" class="btn btn-sm btn-outline-danger"

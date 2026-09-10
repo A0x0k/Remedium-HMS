@@ -137,11 +137,11 @@
                     <span class="fw-semibold">Billing</span>
                 </div>
                 <div class="list-group list-group-flush rounded-bottom-3">
-                    <a href="{% url 'invoice_create' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-3 border-0">
+                    <a href="{% url 'billing:invoice_create' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-3 border-0">
                         <span class="small text-body"><i class="bi bi-plus-circle me-2 text-muted"></i>New Invoice</span>
                         <i class="bi bi-chevron-right small text-muted"></i>
                     </a>
-                    <a href="{% url 'invoice_list' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-3 border-0">
+                    <a href="{% url 'billing:invoice_list' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-4 py-3 border-0">
                         <span class="small text-body"><i class="bi bi-receipt me-2 text-muted"></i>View Invoices</span>
                         <i class="bi bi-chevron-right small text-muted"></i>
                     </a>

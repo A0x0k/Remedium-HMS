@@ -6,7 +6,7 @@
         <h4 class="fw-bold mb-1"><i class="bi bi-cash-stack text-primary me-2"></i>Invoices</h4>
         <p class="text-muted small mb-0">Manage patient billing and payments</p>
     </div>
-    <a href="{% url 'invoice_create' %}" class="btn btn-primary shadow-sm"><i class="bi bi-plus-circle me-1"></i> Create Invoice</a>
+    <a href="{% url 'billing:invoice_create' %}" class="btn btn-primary shadow-sm"><i class="bi bi-plus-circle me-1"></i> Create Invoice</a>
 </div>
 
 {% if invoices %}
@@ -45,15 +45,15 @@
                     </td>
                     <td class="pe-4 text-end">
                         <div class="btn-group">
-                            <a href="{% url 'invoice_detail' invoice.pk %}" class="btn btn-sm btn-outline-primary" title="View" aria-label="View">
+                            <a href="{% url 'billing:invoice_detail' invoice.pk %}" class="btn btn-sm btn-outline-primary" title="View" aria-label="View">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="{% url 'invoice_update' invoice.pk %}" class="btn btn-sm btn-outline-warning" title="Edit" aria-label="Edit">
+                            <a href="{% url 'billing:invoice_update' invoice.pk %}" class="btn btn-sm btn-outline-warning" title="Edit" aria-label="Edit">
                                 <i class="bi bi-pencil"></i>
                             </a>
                             <button type="button" class="btn btn-sm btn-outline-danger" title="Delete" aria-label="Delete"
                                 data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
-                                data-action-url="{% url 'invoice_delete' invoice.pk %}"
+                                data-action-url="{% url 'billing:invoice_delete' invoice.pk %}"
                                 data-item-name="invoice #{{ invoice.id }}">
                                 <i class="bi bi-trash"></i>
                             </button>
@@ -74,7 +74,7 @@
         <i class="bi bi-receipt d-block text-muted opacity-25" style="font-size:3rem;margin-bottom:0.75rem;"></i>
         <h5 class="text-muted">No invoices found</h5>
         <p class="text-muted small mb-3">Start by creating your first invoice.</p>
-        <a href="{% url 'invoice_create' %}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> Create Invoice</a>
+        <a href="{% url 'billing:invoice_create' %}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> Create Invoice</a>
     </div>
 </div>
 {% endif %}
