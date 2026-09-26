@@ -1,6 +1,5 @@
 from django import forms
 from .models import Appointment
-from django.utils import timezone
 
 
 class AppointmentForm(forms.ModelForm):

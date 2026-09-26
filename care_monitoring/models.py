@@ -1,5 +1,4 @@
 from django.db import models
-from patients.models import Patient
 from decimal import Decimal
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError

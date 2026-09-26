@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -16,7 +16,6 @@ from .models import Staff, Shift
 
 from django.utils import timezone
 from django.db.models import Count, Q
-from medical_records.models import Encounter
 
 
 class DoctorAvailabilityView(

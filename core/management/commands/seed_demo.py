@@ -14,8 +14,7 @@ from datetime import timedelta
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from django.contrib.auth.models import User, Group
-from django.db import transaction
+from django.contrib.auth.models import User
 
 from patients.models import Patient
 from staff.models import Staff

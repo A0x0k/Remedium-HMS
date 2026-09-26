@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from cryptography.fernet import Fernet

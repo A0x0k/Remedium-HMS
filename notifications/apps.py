@@ -6,4 +6,6 @@ class NotificationsConfig(AppConfig):
     name = "notifications"
 
     def ready(self):
-        import notifications.signals
+        # Imported for its side effect: this module registers the signal
+        # handlers. The name is intentionally unused.
+        import notifications.signals  # noqa: F401

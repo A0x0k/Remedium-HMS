@@ -4,7 +4,6 @@ import pytest
 from datetime import date, timedelta
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib.auth.models import User, Permission
 from django.test import Client
 from patients.models import Patient

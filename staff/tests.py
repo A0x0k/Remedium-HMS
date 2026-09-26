@@ -1,10 +1,7 @@
 """Tests for staff app."""
 
 import pytest
-from datetime import timedelta
-from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib.auth.models import User, Permission
 from django.test import Client
 from staff.models import Staff

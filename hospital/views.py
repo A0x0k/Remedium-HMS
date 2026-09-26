@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views import generic
 from .models import Ward, Room, HospitalService
 from .forms import WardForm, RoomForm

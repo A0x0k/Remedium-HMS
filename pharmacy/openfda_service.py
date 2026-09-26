@@ -17,7 +17,6 @@ to prevent worker threads from being blocked during OpenFDA API calls.
 """
 
 import logging
-from datetime import timedelta
 from django.core.cache import cache
 import requests
 

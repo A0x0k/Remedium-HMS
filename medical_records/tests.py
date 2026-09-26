@@ -1,7 +1,6 @@
 """Tests for medical_records app."""
 
 import pytest
-import io
 from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse

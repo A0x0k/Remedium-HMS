@@ -5,8 +5,6 @@ from core.views import DeleteSuccessMixin, SuccessQueryParamMixin
 from django.views import generic
 from django.urls import reverse_lazy
 from .models import PatientCare
-from patients.models import Patient
-import json
 
 
 class PatientCareForm(forms.ModelForm):

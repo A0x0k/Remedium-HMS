@@ -7,7 +7,6 @@ from datetime import timedelta
 from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.test import Client
-from rest_framework.test import APIClient
 from rest_framework import status
 from pharmacy.models import Prescription
 from pharmacy.openfda_service import search_drug_label, search_adverse_events
