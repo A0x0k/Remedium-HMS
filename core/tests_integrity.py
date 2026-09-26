@@ -18,7 +18,7 @@ from pathlib import Path
 
 import pytest
 from django.contrib.auth.models import Group, Permission
-from django.urls import get_resolver, reverse, NoReverseMatch
+from django.urls import get_resolver, reverse
 
 from core.permissions import IsOwnerOrReadOnly
 from patients.models import Patient
