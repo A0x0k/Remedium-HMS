@@ -123,6 +123,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial commit of project files ([`fbeb48c`])
 
 ### Fixed
+- **core**: correct the has_perm lookup in IsOwnerOrReadOnly ([`512be0d`])
 - remove billing.urls double-include, DEBUG print, enforce invoice validation, DB filter for medical staff ([`2402a9e`])
 - remove page transition delay and improve search scope ([`2f3db4c`])
 - resolve DTL syntax errors and URL namespace in patient templates ([`594e904`])
