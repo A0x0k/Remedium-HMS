@@ -139,7 +139,7 @@ Prefer to run it yourself? See [Quick Start](#-quick-start) below.
 
 ## Architecture
 
-Remedium follows a **Modular Monolith** pattern with strict domain boundaries across 14 specialized apps.
+Remedium follows a **Modular Monolith** pattern with strict domain boundaries across 15 specialized apps.
 
 ```mermaid
 graph LR
@@ -167,6 +167,7 @@ graph LR
         E2[Reporting]
         E3[Integration]
         E4[Hospital Units]
+        E5[Notifications]
     end
 
     A --> Clinical

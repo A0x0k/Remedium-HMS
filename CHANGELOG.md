@@ -48,6 +48,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- **lint**: clear the last 12 ruff findings ([`55b2d68`])
 - **lint**: drop 46 unused imports flagged by ruff F401 ([`94e65b7`])
 - take all three gates from red to green ([`6b1ba0c`])
 - **core**: drop an unused import flagged by ruff ([`6432306`])
