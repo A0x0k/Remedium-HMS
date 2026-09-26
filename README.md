@@ -16,8 +16,8 @@
 [![DRF](https://img.shields.io/badge/DRF-3.16-A30000?style=flat-square&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
 [![Hosted on Railway](https://img.shields.io/badge/Hosted%20on-Railway-8B5CF6?style=flat-square&logo=railway&logoColor=white)](https://railway.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-185-brightgreen?style=flat-square)](#testing)
-[![Coverage](https://img.shields.io/badge/Coverage-83%25-success?style=flat-square)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-203-brightgreen?style=flat-square)](#testing)
+[![Coverage](https://img.shields.io/badge/Coverage-87%25-success?style=flat-square)](#testing)
 
 <br />
 
@@ -29,7 +29,7 @@
 
 ## Engineering Highlights
 
-- **Modular Monolith Architecture**: Decoupled 14-app domain-driven design for superior maintainability, testability, and scalability.
+- **Modular Monolith Architecture**: Decoupled 15-app domain-driven design for superior maintainability, testability, and scalability.
 - **Security-First Engineering**: HIPAA-ready design implementing Fernet encryption for PHI at rest, immutable audit trails, and granular Role-Based Access Control (RBAC).
 - **Production-Grade Infrastructure**: Full lifecycle management using Docker (non-root), Gunicorn, WhiteNoise, and robust GitHub Actions CI/CD pipelines. Deployed and live on Railway.
 - **Clinical-Grade Complexity**: Implements conflict-aware appointment scheduling, real-time patient monitoring, and ledger-based financial billing systems.
@@ -72,15 +72,17 @@ Remedium HMS is a full-featured hospital management platform designed to handle 
 
 **Demo credentials**
 
-The public instance runs a single, deliberately low-privilege demo account. It is **not** a Django superuser or staff user, so it cannot reach `/admin/` or escalate its own role.
+The public instance runs a single, deliberately read-only demo account. It is **not** a Django superuser or staff user, so it cannot reach `/admin/`, and it holds no add/change/delete permission on anything.
 
 | Role | Username | Password |
 |:-----|:---------|:---------|
-| **Administrator** (scoped) | `demo` | `demo1234` |
+| **Read-only viewer** | `demo` | `demo1234` |
 
-> **Shared instance.** The password above is public by design, so treat this as a read-mostly sandbox: anyone can sign in. Do not enter real patient information — this is not a HIPAA-compliant production environment. Data is reset on redeploy.
+> **Shared instance.** The password above is public by design, so treat this as a read-mostly sandbox: anyone can sign in and browse, but every create, edit and delete request is rejected with 403. Do not enter real patient information — this is not a HIPAA-compliant production environment. Data is reset on redeploy.
 >
-> The account is created automatically by the deploy hook via `create_demo_user --if-enabled`, and is skipped entirely unless `DEMO_ACCOUNT_ENABLED=true` is set.
+> Access is curtailed twice over, because either control alone would leak: the account's staff role is `VIEWER`, which appears in none of the role allow-lists in `core/permissions.py` so every role-gated API endpoint rejects it; and its group carries only `*_view_*` permissions, so the view layer permits reads and denies writes.
+>
+> The account is created automatically by the deploy hook via `create_demo_user --if-enabled`, and is skipped entirely unless `DEMO_ACCOUNT_ENABLED=true` is set. Redeploying also demotes an account created by an earlier version, so tightening the role takes effect on the next deploy.
 
 **Try these first (requires login):**
 1. Explore the **Revenue Analytics** dashboard for charts and trend data
@@ -334,7 +336,7 @@ pip install pytest-cov
 pytest --cov=. --cov-report=term-missing
 ```
 
-**Current status:** 185 tests passing, 83% coverage, zero failures.
+**Current status:** 203 tests passing, 87% coverage, zero failures.
 
 ---
 
