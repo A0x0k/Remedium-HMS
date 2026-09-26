@@ -26,4 +26,8 @@ ROLE_GROUPS = {
     "SECURITY": "Security",
     "MAINTENANCE": "Maintenance",
     "OTHER": "Other",
+    # Read-only demo role. The group carries only *_view_* permissions, so
+    # PermissionRequiredMixin lets list/detail pages render while every
+    # add/change/delete view raises 403.
+    "VIEWER": "Demo Viewer",
 }
