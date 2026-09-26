@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased] - 2026-09-10
+## [Unreleased] - 2026-09-26
 
 ### Added
 - improve dashboard UX with timestamps, notification bell, and mobile nav ([`0e4aaca`])
@@ -46,6 +46,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- Add FIELD_ENCRYPTION_KEY dummy for collectstatic ([`d50ddc0`])
 - Final Dockerfile fixes for Railway ([`bccbbaf`])
 - Final Dockerfile fixes for Railway ([`21309bb`])
 - Fix psycopg2 to binary version ([`2673efe`])
