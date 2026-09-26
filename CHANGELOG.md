@@ -47,6 +47,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- **deploy**: seed scoped demo account from the Railway release hook ([`a971a77`])
 - Add FIELD_ENCRYPTION_KEY dummy for collectstatic ([`d50ddc0`])
 - Final Dockerfile fixes for Railway ([`bccbbaf`])
 - Final Dockerfile fixes for Railway ([`21309bb`])

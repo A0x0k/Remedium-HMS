@@ -10,16 +10,18 @@
 
 ---
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Try%20It%20Now-22c55e?style=flat-square&logo=railway&logoColor=white)](https://remedium-hms.up.railway.app)
 [![Django](https://img.shields.io/badge/Django-5.2-092E20?style=flat-square&logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![DRF](https://img.shields.io/badge/DRF-3.16-A30000?style=flat-square&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
+[![Hosted on Railway](https://img.shields.io/badge/Hosted%20on-Railway-8B5CF6?style=flat-square&logo=railway&logoColor=white)](https://railway.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-113+-brightgreen?style=flat-square)](#testing)
-[![Coverage](https://img.shields.io/badge/Coverage-83%25-success?style=flat-square)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-184-brightgreen?style=flat-square)](#testing)
+[![Coverage](https://img.shields.io/badge/Coverage-84%25-success?style=flat-square)](#testing)
 
 <br />
 
-[Quick Start](#-quick-start) &nbsp;&bull;&nbsp; [Features](#-features) &nbsp;&bull;&nbsp; [Architecture](#-architecture) &nbsp;&bull;&nbsp; [API Docs](#-api) &nbsp;&bull;&nbsp; [Contributing](#-contributing)
+[Live Demo](#-live-demo) &nbsp;&bull;&nbsp; [Quick Start](#-quick-start) &nbsp;&bull;&nbsp; [Features](#-features) &nbsp;&bull;&nbsp; [Architecture](#-architecture) &nbsp;&bull;&nbsp; [API Docs](#-api) &nbsp;&bull;&nbsp; [Deployment](#-deployment) &nbsp;&bull;&nbsp; [Contributing](#-contributing)
 
 </div>
 
@@ -29,7 +31,7 @@
 
 - **Modular Monolith Architecture**: Decoupled 14-app domain-driven design for superior maintainability, testability, and scalability.
 - **Security-First Engineering**: HIPAA-ready design implementing Fernet encryption for PHI at rest, immutable audit trails, and granular Role-Based Access Control (RBAC).
-- **Production-Grade Infrastructure**: Full lifecycle management using Docker (non-root), Gunicorn, WhiteNoise, and robust GitHub Actions CI/CD pipelines.
+- **Production-Grade Infrastructure**: Full lifecycle management using Docker (non-root), Gunicorn, WhiteNoise, and robust GitHub Actions CI/CD pipelines. Deployed and live on Railway.
 - **Clinical-Grade Complexity**: Implements conflict-aware appointment scheduling, real-time patient monitoring, and ledger-based financial billing systems.
 - **API-First Strategy**: Comprehensive OpenAPI 3.0 documentation via Swagger/ReDoc, supporting enterprise-grade integrations.
 
@@ -44,7 +46,49 @@ Remedium HMS is a full-featured hospital management platform designed to handle 
 - **Security-first** — PHI encrypted at rest with Fernet, immutable audit trails, granular RBAC across 13 roles
 - **Clinical-grade** — Conflict-aware scheduling, vital signs monitoring, OpenFDA drug lookup
 - **Production-ready** — Dockerized, PostgreSQL-compatible, JWT auth, OpenAPI docs
+- **Live in production** — Deployed on [Railway](https://remedium-hms.up.railway.app) with PostgreSQL and Gunicorn
 - **Beautiful UI** — Glassmorphic design system with dark mode, animations, and mobile-first responsive layout
+
+---
+
+## 🚀 Live Demo
+
+**The application is live and running — no setup required.**
+
+<div align="center">
+
+### [🌐 Open Remedium HMS →](https://remedium-hms.up.railway.app)
+
+</div>
+
+| | |
+|:--|:--|
+| **URL** | [https://remedium-hms.up.railway.app](https://remedium-hms.up.railway.app) |
+| **Status** | 🟢 Live |
+| **Hosting** | [Railway](https://railway.app) |
+| **Database** | PostgreSQL |
+| **WSGI Server** | Gunicorn |
+| **HTTPS** | Enforced |
+
+**Demo credentials**
+
+The public instance runs a single, deliberately low-privilege demo account. It is **not** a Django superuser or staff user, so it cannot reach `/admin/` or escalate its own role.
+
+| Role | Username | Password |
+|:-----|:---------|:---------|
+| **Administrator** (scoped) | `demo` | `demo1234` |
+
+> **Shared instance.** The password above is public by design, so treat this as a read-mostly sandbox: anyone can sign in. Do not enter real patient information — this is not a HIPAA-compliant production environment. Data is reset on redeploy.
+>
+> The account is created automatically by the deploy hook via `create_demo_user --if-enabled`, and is skipped entirely unless `DEMO_ACCOUNT_ENABLED=true` is set.
+
+**Try these first (requires login):**
+1. Explore the **Revenue Analytics** dashboard for charts and trend data
+2. Try **appointments** scheduling to see the conflict-detection engine in action
+3. Hit the **API docs** at [`/api/v1/docs/`](https://remedium-hms.up.railway.app/api/v1/docs/) to explore the REST API — no login required
+4. Browse the **Audit Logs** to see the immutable trail in action
+
+Prefer to run it yourself? See [Quick Start](#-quick-start) below.
 
 ---
 
@@ -196,12 +240,14 @@ Each role gets a purpose-built interface with the data and tools they need.
 | **Auth** | JWT tokens, token blacklist, role-based access control |
 | **Frontend** | Bootstrap 5.3, custom glassmorphism CSS, Chart.js, vanilla JS |
 | **Security** | Fernet PHI encryption, CSRF protection, login throttling |
-| **DevOps** | Docker (non-root), Gunicorn, WhiteNoise, GitHub Actions |
+| **DevOps** | Docker (non-root), Gunicorn, WhiteNoise, GitHub Actions, Railway (live) |
 | **API** | OpenAPI 3.0 with Swagger UI and ReDoc |
 
 ---
 
 ## Quick Start
+
+> **Just want to look around?** Skip this and use the [Live Demo](https://remedium-hms.up.railway.app) instead.
 
 ### 1. Clone & Install
 
@@ -221,13 +267,25 @@ python manage.py create_groups       # RBAC roles
 python manage.py create_role_users   # Demo accounts (optional)
 ```
 
+To create a single scoped demo account like the public instance uses:
+
+```bash
+python manage.py create_demo_user --force
+```
+
 ### 3. Run
 
 ```bash
 python manage.py runserver
 ```
 
-Open **http://localhost:8000** and sign in with `admin` / `password123`.
+Open **http://localhost:8000** and sign in with the credentials printed by `create_role_users` (it generates a random password per run and prints it once). To use a known local password instead:
+
+```bash
+python manage.py create_role_users --use-default-password   # sets every role to "password123"
+```
+
+Or create a superuser interactively with `python manage.py createsuperuser`.
 
 ---
 
@@ -247,8 +305,20 @@ All endpoints are versioned under `/api/v1/`.
 | `/api/v1/inventory/` | Pharmacy and supply inventory |
 
 **Interactive docs:**
-- Swagger UI: `/api/v1/docs/`
-- ReDoc: `/api/v1/redoc/`
+- Swagger UI: `/api/v1/docs/` — or live at [remedium-hms.up.railway.app/api/v1/docs/](https://remedium-hms.up.railway.app/api/v1/docs/)
+- ReDoc: `/api/v1/redoc/` — or live at [remedium-hms.up.railway.app/api/v1/redoc/](https://remedium-hms.up.railway.app/api/v1/redoc/)
+
+**Try it against the live instance:**
+
+```bash
+# Public — the OpenAPI schema is served without auth
+curl https://remedium-hms.up.railway.app/api/v1/docs/
+
+# Protected — clinical data requires a JWT (returns 401 without one)
+curl -i https://remedium-hms.up.railway.app/api/v1/patients/
+```
+
+Obtain a token from `/api/v1/token/`, then pass it as `Authorization: Bearer <token>`.
 
 ---
 
@@ -263,7 +333,9 @@ pip install pytest-cov
 pytest --cov=. --cov-report=term-missing
 ```
 
-**Current status:** 113+ tests, 83% coverage, zero critical vulnerabilities.
+**Current status:** 184 passing, 84% coverage.
+
+**Known failure:** `staff/tests.py::TestStaffViews::test_doctor_availability_with_permission` — the `/staff/availability/` view raises `FieldError: Cannot resolve keyword 'encounter_set'` because it uses a stale reverse-relation name (the related name is `encounter`). Pre-existing and unrelated to the demo account.
 
 ---
 
@@ -295,6 +367,42 @@ Remedium-HMS/
 
 ---
 
+## Deployment
+
+The live instance runs on **Railway** using the included `Procfile` and production requirements.
+
+| Component | Detail |
+|:----------|:-------|
+| Platform | Railway (PaaS) |
+| WSGI | `gunicorn remedium_hms.wsgi` |
+| Release hook | `migrate && create_groups && create_demo_user --if-enabled` |
+| Database | PostgreSQL |
+| Static files | WhiteNoise |
+| Env template | `.env.example` |
+
+<details>
+<summary>Deploy your own instance</summary>
+
+```bash
+# 1. Fork or clone this repo
+git clone https://github.com/neoastra303/Remedium-HMS.git
+
+# 2. Create a new Railway project from the repo
+# 3. Add a PostgreSQL plugin and link it to the service
+# 4. Copy .env.example to .env and fill in the secrets
+# 5. Set DJANGO_SETTINGS_MODULE=remedium_hms.settings
+# 6. (Optional) Set DEMO_ACCOUNT_ENABLED=true to seed the public demo account
+# 7. Deploy — the Procfile release hook runs migrations automatically
+```
+
+The release hook runs `create_demo_user --if-enabled`, which exits cleanly when `DEMO_ACCOUNT_ENABLED` is unset, so deployments without a demo account are unaffected.
+
+</details>
+
+**Live URL:** [https://remedium-hms.up.railway.app](https://remedium-hms.up.railway.app)
+
+---
+
 ## Contributing
 
 Contributions are welcome! Please read:
@@ -315,6 +423,6 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 **Built with Django & Python**
 
-[neoastra303](https://github.com/neoastra303)
+🌐 [Live Demo](https://remedium-hms.up.railway.app) &nbsp;&bull;&nbsp; [neoastra303](https://github.com/neoastra303)
 
 </div>
