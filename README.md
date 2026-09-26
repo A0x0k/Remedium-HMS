@@ -252,7 +252,7 @@ Each role gets a purpose-built interface with the data and tools they need.
 ### 1. Clone & Install
 
 ```bash
-git clone https://github.com/neoastra303/Remedium-HMS.git
+git clone https://github.com/A0x0k/Remedium-HMS.git
 cd Remedium-HMS
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
@@ -385,7 +385,7 @@ The live instance runs on **Railway** using the included `Procfile` and producti
 
 ```bash
 # 1. Fork or clone this repo
-git clone https://github.com/neoastra303/Remedium-HMS.git
+git clone https://github.com/A0x0k/Remedium-HMS.git
 
 # 2. Create a new Railway project from the repo
 # 3. Add a PostgreSQL plugin and link it to the service
@@ -423,6 +423,6 @@ This project is licensed under the MIT License — see [LICENSE](LICENSE) for de
 
 **Built with Django & Python**
 
-🌐 [Live Demo](https://remedium-hms.up.railway.app) &nbsp;&bull;&nbsp; [neoastra303](https://github.com/neoastra303)
+🌐 [Live Demo](https://remedium-hms.up.railway.app) &nbsp;&bull;&nbsp; [A0x0k](https://github.com/A0x0k)
 
 </div>
