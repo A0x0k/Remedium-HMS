@@ -8,6 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased] - 2026-09-26
 
 ### Added
+- **settings**: make the HSTS sub-settings configurable via env ([`98124a2`])
 - **core**: add create_demo_user command for public showcase deployments ([`c692737`])
 - improve dashboard UX with timestamps, notification bell, and mobile nav ([`0e4aaca`])
 - add revenue trend and appointment charts to admin dashboard ([`f471c1a`])

@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: ["**"]
   pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -15,7 +15,22 @@ jobs:
         with:
           python-version: "3.13"
       - run: pip install ruff
-      - run: ruff check . --output-format=github
+      - run: ruff check .
+
+  migrations:
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ci-test-secret-key-that-is-long-enough-for-jwt-hmac-sha256-minimum-32-bytes
+      FIELD_ENCRYPTION_KEY: a0E5WUtzUi1XS2l5c0x5c0hPUWc5dkw4Z1RVVTNkYlM=
+      DEBUG: False
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - name: Fail if any model has unmigrated changes
+        run: python manage.py makemigrations --check --dry-run
 
   test:
     runs-on: ubuntu-latest
@@ -30,7 +45,18 @@ jobs:
           python-version: "3.13"
       - run: pip install -r requirements.txt
       - run: python manage.py collectstatic --noinput
-      - run: python manage.py check --deploy --fail-level WARNING
+      # Runs with production-like transport security so the check is
+      # meaningful. Kept off the pytest step on purpose: SECURE_SSL_REDIRECT
+      # would turn every test client request (http://testserver) into a 301.
+      - name: Django deployment check
+        env:
+          SECURE_SSL_REDIRECT: "True"
+          SESSION_COOKIE_SECURE: "True"
+          CSRF_COOKIE_SECURE: "True"
+          SECURE_HSTS_SECONDS: "31536000"
+          SECURE_HSTS_INCLUDE_SUBDOMAINS: "True"
+          SECURE_HSTS_PRELOAD: "True"
+        run: python manage.py check --deploy --fail-level WARNING
       - run: pytest --tb=short -q
 
   security:
@@ -41,4 +67,7 @@ jobs:
         with:
           python-version: "3.13"
       - run: pip install bandit
-      - run: bandit -r remedium_hms/ core/ patients/ staff/ --skip B101
+      # -ll reports medium and high severity only. Every low-severity finding
+      # in this repo is a false positive: B106/B105 hardcoded passwords in test
+      # fixtures, and B311 random.choice generating fake demo clinical data.
+      - run: bandit -r remedium_hms/ core/ patients/ staff/ --skip B101 -ll
