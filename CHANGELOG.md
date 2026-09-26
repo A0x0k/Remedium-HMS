@@ -8,6 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased] - 2026-09-26
 
 ### Added
+- **ui**: show the Clinical and Operations menus to the read-only viewer ([`bdfe36b`])
 - **staff**: add a VIEWER role for the public demo account ([`9a782a0`])
 - **settings**: make the HSTS sub-settings configurable via env ([`98124a2`])
 - **core**: add create_demo_user command for public showcase deployments ([`c692737`])

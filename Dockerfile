@@ -40,8 +40,4 @@ USER appuser
 EXPOSE 8000
 
 # Run gunicorn
-<<<<<<< HEAD
 CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${GUNICORN_WORKERS:-4}"]
-=======
-CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${GUNICORN_WORKERS:-4}"]
->>>>>>> origin/main

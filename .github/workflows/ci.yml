@@ -16,6 +16,16 @@ jobs:
           python-version: "3.13"
       - run: pip install ruff
       - run: ruff check .
+      # An unresolved merge conflict in the Dockerfile builds as an unknown
+      # instruction and fails the image build with a parse error that names a
+      # line number but not the cause. Catch it before that happens.
+      - name: Fail on unresolved merge conflict markers
+        run: |
+          if git grep -nE '^(<{7}|={7}|>{7})' -- . ; then
+            echo "::error::Unresolved merge conflict markers committed. Resolve them before pushing."
+            exit 1
+          fi
+          echo "No conflict markers in tracked files."
 
   migrations:
     runs-on: ubuntu-latest
