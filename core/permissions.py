@@ -123,8 +123,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return False
         if request.user.is_staff:
             return True
-        # Check if user has permission to change this type of object
+        # Check if user has permission to change this type of object.
+        # Custom permissions in this project are declared as
+        # "<app_label>_<action>_<model>" (e.g. patients_change_patient),
+        # so the lookup codename must carry the app_label prefix too.
+        # Plain "change_<model>" matches only Django's auto-generated
+        # defaults, which no group is ever granted.
         if hasattr(obj, "_meta"):
             app_label = obj._meta.app_label
-            return request.user.has_perm(f"{app_label}.change_{obj._meta.model_name}")
+            model_name = obj._meta.model_name
+            return request.user.has_perm(f"{app_label}.{app_label}_change_{model_name}")
         return False
