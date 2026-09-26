@@ -126,6 +126,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial commit of project files ([`fbeb48c`])
 
 ### Fixed
+- **medical_records**: add the missing PatientDocument Meta migration ([`80068bc`])
 - **core**: assign permission groups when seeding role users ([`02168cd`])
 - **staff**: repair the 500 on the doctor availability page ([`11e0747`])
 - **core**: correct the has_perm lookup in IsOwnerOrReadOnly ([`512be0d`])
