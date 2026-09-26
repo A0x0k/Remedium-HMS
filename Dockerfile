@@ -26,8 +26,14 @@ COPY . .
 RUN mkdir -p logs staticfiles media
 
 # Collect static files (dummy keys for build time only)
+# FIELD_ENCRYPTION_KEY must be a syntactically valid Fernet key, because
+# encrypted_model_fields builds its Crypter at import time, so importing any
+# model requires a parseable key. A fixed placeholder is not enough, and
+# committing a real-looking key to the repo is worse, so generate a throwaway
+# one per build. It encrypts nothing and the runtime key comes from the
+# environment.
 RUN SECRET_KEY=build-only-secret-key-for-static-collection-not-for-runtime \
-    FIELD_ENCRYPTION_KEY=build-only-fernet-key-for-static-collection-not-for-runtime \
+    FIELD_ENCRYPTION_KEY="$(python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())')" \
     python manage.py collectstatic --noinput
 
 # Create non-root user and set permissions

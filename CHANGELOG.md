@@ -50,6 +50,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- Merge pull request #4 from A0x0k/main ([`1d7f8b5`])
+- Merge pull request #3 from A0x0k/fix/project-review-issues ([`a93e967`])
 - describe the demo account accurately and refresh stale figures ([`7eb55f2`])
 - **core**: rename tests_integrity.py so pytest actually collects it ([`26bdbcc`])
 - Merge origin/main into fix/project-review-issues ([`e4f813d`])
@@ -139,6 +141,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial commit of project files ([`fbeb48c`])
 
 ### Fixed
+- **Dockerfile**: remove committed merge conflict markers ([`56f8101`])
 - **hospital**: stop the bed map 500-ing for every user ([`ffc5607`])
 - **demo**: make the published demo account read-only and self-healing ([`b6f045b`])
 - **groups**: resolve permissions whose app label contains an underscore ([`0da7dee`])
