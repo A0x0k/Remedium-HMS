@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 from datetime import date
 from encrypted_model_fields.fields import EncryptedCharField, EncryptedTextField, EncryptedEmailField
 from core.models import RemediumBaseModel

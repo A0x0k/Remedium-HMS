@@ -3,13 +3,6 @@ OpenFDA API integration service.
 
 Provides drug information from the FDA's public API.
 Results are cached to avoid repeated API calls.
-"""
-
-"""
-OpenFDA API integration service.
-
-Provides drug information from the FDA's public API.
-Results are cached to avoid repeated API calls.
 
 NOTE: These calls are synchronous and block the request thread. For production
 deployments at scale, consider migrating to an async task queue (Celery/django-q)
@@ -17,7 +10,6 @@ to prevent worker threads from being blocked during OpenFDA API calls.
 """
 
 import logging
-from datetime import timedelta
 from django.core.cache import cache
 import requests
 

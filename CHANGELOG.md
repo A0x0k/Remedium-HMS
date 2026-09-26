@@ -5,9 +5,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased] - 2026-09-10
+## [Unreleased] - 2026-09-26
 
 ### Added
+- **staff**: add a VIEWER role for the public demo account ([`9a782a0`])
+- **settings**: make the HSTS sub-settings configurable via env ([`98124a2`])
+- **core**: add create_demo_user command for public showcase deployments ([`c692737`])
 - improve dashboard UX with timestamps, notification bell, and mobile nav ([`0e4aaca`])
 - add revenue trend and appointment charts to admin dashboard ([`f471c1a`])
 - add public landing page with hero, features, and security showcase ([`60c5084`])
@@ -46,6 +49,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- describe the demo account accurately and refresh stale figures ([`7eb55f2`])
+- **core**: rename tests_integrity.py so pytest actually collects it ([`26bdbcc`])
+- Merge origin/main into fix/project-review-issues ([`e4f813d`])
+- **readme**: correct the app count and complete the architecture diagram ([`f65948c`])
+- **lint**: clear the last 12 ruff findings ([`55b2d68`])
+- **lint**: drop 46 unused imports flagged by ruff F401 ([`94e65b7`])
+- take all three gates from red to green ([`6b1ba0c`])
+- **core**: drop an unused import flagged by ruff ([`6432306`])
+- **readme**: record the green suite after the availability fix ([`beacb06`])
+- **core**: cover the authorization and template URL regressions ([`b9777fc`])
+- **readme**: point clone and profile links at the A0x0k account ([`1a067ae`])
+- **readme**: document live deployment, demo access, and accurate stats ([`dac72c6`])
+- **deploy**: seed scoped demo account from the Railway release hook ([`a971a77`])
+- Update FIELD_ENCRYPTION_KEY in Dockerfile ([`b3afa78`])
+- Update Dockerfile with environment variables and user setup ([`9bf5b54`])
+- Add FIELD_ENCRYPTION_KEY dummy for collectstatic ([`d50ddc0`])
+- Final Dockerfile fixes for Railway ([`bccbbaf`])
+- Final Dockerfile fixes for Railway ([`21309bb`])
+- Merge pull request #1 from A0x0k/fix/project-review-issues ([`96fa24c`])
+- Fix psycopg2 to binary version ([`2673efe`])
 - Fix Dockerfile for psycopg2 and Railway port ([`dc5656f`])
 - Fix psycopg2 to binary version ([`2a407be`])
 - Fix psycopg2 to binary version ([`8324825`])
@@ -115,6 +138,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial commit of project files ([`fbeb48c`])
 
 ### Fixed
+- **hospital**: stop the bed map 500-ing for every user ([`ffc5607`])
+- **demo**: make the published demo account read-only and self-healing ([`b6f045b`])
+- **groups**: resolve permissions whose app label contains an underscore ([`0da7dee`])
+- **medical_records**: add the missing PatientDocument Meta migration ([`80068bc`])
+- **core**: assign permission groups when seeding role users ([`02168cd`])
+- **staff**: repair the 500 on the doctor availability page ([`11e0747`])
+- **core**: correct the has_perm lookup in IsOwnerOrReadOnly ([`512be0d`])
 - remove billing.urls double-include, DEBUG print, enforce invoice validation, DB filter for medical staff ([`2402a9e`])
 - remove page transition delay and improve search scope ([`2f3db4c`])
 - resolve DTL syntax errors and URL namespace in patient templates ([`594e904`])

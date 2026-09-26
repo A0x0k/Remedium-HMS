@@ -18,6 +18,7 @@ def user_roles(request):
     is_technician = request.user.groups.filter(name="Technician").exists()
     is_security = request.user.groups.filter(name="Security").exists()
     is_maintenance = request.user.groups.filter(name="Maintenance").exists()
+    is_viewer = request.user.groups.filter(name="Demo Viewer").exists()
 
     staff_profile = getattr(request.user, "staff_profile", None)
     if staff_profile:
@@ -45,6 +46,8 @@ def user_roles(request):
             is_security = True
         elif staff_profile.role == "MAINTENANCE":
             is_maintenance = True
+        elif staff_profile.role == "VIEWER":
+            is_viewer = True
 
     from notifications.models import Notification
 
@@ -63,5 +66,6 @@ def user_roles(request):
         "is_hms_technician": is_technician,
         "is_hms_security": is_security,
         "is_hms_maintenance": is_maintenance,
+        "is_hms_viewer": is_viewer,
         "unread_notifications": unread_notifications,
     }

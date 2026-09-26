@@ -14,8 +14,7 @@ from datetime import timedelta
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from django.contrib.auth.models import User, Group
-from django.db import transaction
+from django.contrib.auth.models import User
 
 from patients.models import Patient
 from staff.models import Staff
@@ -298,7 +297,6 @@ class Command(BaseCommand):
     def _create_appointments(self, patients, staff_members, now):
         """Create past and upcoming appointments."""
         doctors = [s for s in staff_members if s.role == "DOCTOR"]
-        statuses = ["Scheduled", "Completed", "Cancelled", "No Show"]
 
         appointments = []
         for i in range(20):

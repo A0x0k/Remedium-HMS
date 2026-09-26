@@ -1,10 +1,7 @@
 """Tests for staff app."""
 
 import pytest
-from datetime import timedelta
-from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib.auth.models import User, Permission
 from django.test import Client
 from staff.models import Staff
@@ -73,7 +70,7 @@ class TestStaffViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_list")
@@ -89,7 +86,7 @@ class TestStaffViews:
 
     def test_detail_requires_permission(self):
         staff = self._create_staff()
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_detail", kwargs={"pk": staff.pk})
@@ -105,7 +102,7 @@ class TestStaffViews:
         assert response.context["staff"].pk == staff.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_create")

@@ -1,12 +1,12 @@
-from rest_framework import viewsets, filters, status
+from rest_framework import viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 from django.utils import timezone
-from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from .models import Patient
 from .serializers import PatientSerializer, PatientBriefSerializer
-from core.permissions import IsClinicalStaff, IsAdminUser
+from core.permissions import IsClinicalStaff
 from core.serializers import StandardErrorSerializer
 
 

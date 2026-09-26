@@ -89,7 +89,7 @@ class TestWardViews:
         return client
 
     def test_ward_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("hospital:ward_list")

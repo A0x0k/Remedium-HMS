@@ -4,7 +4,6 @@ import pytest
 from datetime import date, timedelta
 from django.core.exceptions import ValidationError
 from django.urls import reverse
-from django.utils import timezone
 from django.contrib.auth.models import User, Permission
 from django.test import Client
 from patients.models import Patient
@@ -211,7 +210,7 @@ class TestPatientViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("patient_list")
@@ -227,7 +226,7 @@ class TestPatientViews:
 
     def test_detail_requires_permission(self):
         patient = self._create_patient()
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("patient_detail", kwargs={"pk": patient.pk})
@@ -243,7 +242,7 @@ class TestPatientViews:
         assert response.context["patient"].pk == patient.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("patient_create")

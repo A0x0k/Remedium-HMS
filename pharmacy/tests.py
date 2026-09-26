@@ -7,7 +7,6 @@ from datetime import timedelta
 from django.urls import reverse
 from django.contrib.auth.models import Permission
 from django.test import Client
-from rest_framework.test import APIClient
 from rest_framework import status
 from pharmacy.models import Prescription
 from pharmacy.openfda_service import search_drug_label, search_adverse_events
@@ -262,7 +261,7 @@ class TestPrescriptionViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("prescription_list")
@@ -277,7 +276,7 @@ class TestPrescriptionViews:
         assert "prescriptions" in response.context
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("prescription_create")

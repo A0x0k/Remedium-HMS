@@ -41,7 +41,7 @@
                         </a>
                     </li>
 
-                    {% if is_hms_admin or is_hms_doctor or is_hms_nurse or is_hms_receptionist or is_hms_surgeon or is_hms_anesthesiologist or is_hms_radiologist %}
+                    {% if is_hms_admin or is_hms_doctor or is_hms_nurse or is_hms_receptionist or is_hms_surgeon or is_hms_anesthesiologist or is_hms_radiologist or is_hms_viewer %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPatientServices" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-activity me-1"></i>Clinical
@@ -55,14 +55,14 @@
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'billing' %}active{% endif %}" href="{% url 'billing:invoice_list' %}"><i class="bi bi-cash-stack me-2"></i> Billing</a></li>
                             {% endif %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'surgery' %}active{% endif %}" href="{% url 'surgery_list' %}"><i class="bi bi-scissors me-2"></i> Surgery</a></li>
-                            {% if is_hms_admin or is_hms_doctor or is_hms_nurse %}
+                            {% if is_hms_admin or is_hms_doctor or is_hms_nurse or is_hms_viewer %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'care_monitoring' %}active{% endif %}" href="{% url 'care_monitoring:patientcare_list' %}"><i class="bi bi-heart-pulse me-2"></i> Vitals / Care</a></li>
                             {% endif %}
                         </ul>
                     </li>
                     {% endif %}
 
-                    {% if is_hms_admin or is_hms_pharmacist or is_hms_lab_tech %}
+                    {% if is_hms_admin or is_hms_pharmacist or is_hms_lab_tech or is_hms_viewer %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownDepartments" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-gear me-1"></i>Operations
@@ -71,10 +71,10 @@
                             {% if is_hms_admin %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'inventory' %}active{% endif %}" href="{% url 'inventoryitem_list' %}"><i class="bi bi-box-seam me-2"></i> Inventory</a></li>
                             {% endif %}
-                            {% if is_hms_admin or is_hms_pharmacist %}
+                            {% if is_hms_admin or is_hms_pharmacist or is_hms_viewer %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'pharmacy' %}active{% endif %}" href="{% url 'prescription_list' %}"><i class="bi bi-capsule me-2"></i> Pharmacy</a></li>
                             {% endif %}
-                            {% if is_hms_admin or is_hms_lab_tech %}
+                            {% if is_hms_admin or is_hms_lab_tech or is_hms_viewer %}
                             <li><a class="dropdown-item {% if request.resolver_match.app_name == 'laboratory' %}active{% endif %}" href="{% url 'labtest_list' %}"><i class="bi bi-microscope me-2"></i> Laboratory</a></li>
                             {% endif %}
                             <li><hr class="dropdown-divider"></li>

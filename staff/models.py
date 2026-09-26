@@ -35,6 +35,10 @@ class Staff(RemediumBaseModel):
         ("SECURITY", "Security"),
         ("MAINTENANCE", "Maintenance"),
         ("OTHER", "Other"),
+        # Read-only role used by the public demo account. It is deliberately
+        # absent from every ALLOWED_ROLES/MEDICAL_ROLES list in
+        # core.permissions, so role-gated API endpoints reject it outright.
+        ("VIEWER", "Read-only Viewer"),
     ]
 
     DEPARTMENT_CHOICES = [

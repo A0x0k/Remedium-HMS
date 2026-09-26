@@ -1,7 +1,9 @@
 import secrets
 import string
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
+
+from core.rbac import ROLE_GROUPS
 from staff.models import Staff
 
 
@@ -83,6 +85,18 @@ class Command(BaseCommand):
                     "is_active": True,
                 },
             )
+
+            # Group membership is what makes user.has_perm(...) resolve.
+            # Without it the seeded accounts rely solely on staff_profile.role.
+            group_name = ROLE_GROUPS.get(role_code)
+            group = Group.objects.filter(name=group_name).first() if group_name else None
+            if group:
+                user.groups.add(group)
+            else:
+                self.stdout.write(self.style.WARNING(
+                    f"Group '{group_name}' not found for '{username}'. Run create_groups first."
+                ))
+
             credentials.append((username, role_code))
 
         self.stdout.write(self.style.SUCCESS(

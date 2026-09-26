@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.utils import timezone
 from .models import ExternalIntegration
 from django.urls import reverse
 from django.contrib.auth.models import Permission, User

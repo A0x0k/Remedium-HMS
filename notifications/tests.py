@@ -103,7 +103,7 @@ class TestNotificationModel:
 
     def test_notification_list_view_requires_permission(self):
         """Test that notification list requires view_notification permission."""
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("notification_list")
@@ -174,7 +174,7 @@ class TestNotificationModel:
             date_of_birth=timezone.now().date() - timedelta(days=365 * 30),
             gender="M",
         )
-        n1 = Notification.objects.create(
+        Notification.objects.create(
             recipient="user1@test.com",
             notification_type="EMAIL",
             message="First",

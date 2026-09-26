@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -16,7 +16,6 @@ from .models import Staff, Shift
 
 from django.utils import timezone
 from django.db.models import Count, Q
-from medical_records.models import Encounter
 
 
 class DoctorAvailabilityView(
@@ -42,8 +41,11 @@ class DoctorAvailabilityView(
         queryset = (
             Staff.objects.filter(role__in=medical_roles, is_active=True)
             .annotate(
+                # Encounter.doctor declares no related_name, so the ORM lookup
+                # name is "encounter" (the related_query_name). "encounter_set"
+                # is only the Python descriptor name and is invalid here.
                 active_cases_count=Count(
-                    "encounter_set", filter=Q(encounter_set__end_time__isnull=True)
+                    "encounter", filter=Q(encounter__end_time__isnull=True)
                 )
             )
             .prefetch_related("shifts")

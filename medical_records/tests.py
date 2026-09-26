@@ -1,7 +1,6 @@
 """Tests for medical_records app."""
 
 import pytest
-import io
 from datetime import timedelta
 from django.utils import timezone
 from django.urls import reverse
@@ -102,7 +101,7 @@ class TestPatientDocumentModel:
             encounter_type="AMBULATORY",
             reason_for_visit="Checkup",
         )
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("encounter_detail", kwargs={"pk": enc.pk})

@@ -140,7 +140,7 @@ class TestSurgeryViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("surgery_list")
@@ -162,7 +162,7 @@ class TestSurgeryViews:
             operating_room="OR-TST",
             procedure="Test Procedure",
         )
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("surgery_detail", kwargs={"pk": surgery.pk})
@@ -184,7 +184,7 @@ class TestSurgeryViews:
         assert response.context["surgery"].pk == surgery.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("surgery_create")

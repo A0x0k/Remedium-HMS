@@ -27,7 +27,7 @@ RUN mkdir -p logs staticfiles media
 
 # Collect static files (dummy keys for build time only)
 RUN SECRET_KEY=build-only-secret-key-for-static-collection-not-for-runtime \
-    FIELD_ENCRYPTION_KEY=45q5bvbwTGRv9II1DJ22sgMpdSTP3O8exTXD-piVu3U= \
+    FIELD_ENCRYPTION_KEY=build-only-fernet-key-for-static-collection-not-for-runtime \
     python manage.py collectstatic --noinput
 
 # Create non-root user and set permissions
@@ -40,4 +40,8 @@ USER appuser
 EXPOSE 8000
 
 # Run gunicorn
+<<<<<<< HEAD
 CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${GUNICORN_WORKERS:-4}"]
+=======
+CMD ["sh", "-c", "gunicorn remedium_hms.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers ${GUNICORN_WORKERS:-4}"]
+>>>>>>> origin/main
