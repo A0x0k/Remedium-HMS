@@ -297,7 +297,6 @@ class Command(BaseCommand):
     def _create_appointments(self, patients, staff_members, now):
         """Create past and upcoming appointments."""
         doctors = [s for s in staff_members if s.role == "DOCTOR"]
-        statuses = ["Scheduled", "Completed", "Cancelled", "No Show"]
 
         appointments = []
         for i in range(20):

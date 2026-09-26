@@ -70,7 +70,7 @@ class TestStaffViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_list")
@@ -86,7 +86,7 @@ class TestStaffViews:
 
     def test_detail_requires_permission(self):
         staff = self._create_staff()
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_detail", kwargs={"pk": staff.pk})
@@ -102,7 +102,7 @@ class TestStaffViews:
         assert response.context["staff"].pk == staff.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("staff_create")

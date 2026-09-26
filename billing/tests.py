@@ -143,7 +143,7 @@ class TestInvoiceViews:
         return client
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("billing:invoice_list")
@@ -159,7 +159,7 @@ class TestInvoiceViews:
 
     def test_detail_requires_permission(self):
         invoice = self._create_invoice()
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("billing:invoice_detail", kwargs={"pk": invoice.pk})
@@ -175,7 +175,7 @@ class TestInvoiceViews:
         assert response.context["invoice"].pk == invoice.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("billing:invoice_create")

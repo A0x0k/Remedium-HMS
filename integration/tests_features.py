@@ -68,7 +68,7 @@ class FeatureIntegrationTest(TestCase):
         appt_time_valid = timezone.make_aware(
             datetime.combine(next_monday, datetime.strptime("10:00", "%H:%M").time())
         )
-        appt_valid = Appointment.objects.create(
+        Appointment.objects.create(
             patient=self.patient, doctor=self.doctor, appointment_date=appt_time_valid
         )
         # Should succeed without error

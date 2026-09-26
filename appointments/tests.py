@@ -125,7 +125,7 @@ class TestAppointmentViews:
         )
 
     def test_list_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("appointment_list")
@@ -141,7 +141,7 @@ class TestAppointmentViews:
 
     def test_detail_requires_permission(self):
         appt = self._create_appointment()
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("appointment_detail", kwargs={"pk": appt.pk})
@@ -157,7 +157,7 @@ class TestAppointmentViews:
         assert response.context["appointment"].pk == appt.pk
 
     def test_create_requires_permission(self):
-        user = User.objects.create_user(username="testuser", password="pass")
+        User.objects.create_user(username="testuser", password="pass")
         client = Client()
         client.login(username="testuser", password="pass")
         url = reverse("appointment_create")

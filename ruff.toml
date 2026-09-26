@@ -1,0 +1,10 @@
+# Ruff configuration
+# See https://docs.astral.sh/ruff/configuration/
+
+[lint.per-file-ignores]
+# remedium_hms/settings_production.py is the production overlay for the base
+# settings module and deliberately uses `from .settings import *` so that every
+# shared setting is inherited without duplicating it. F403/F405 are inherent to
+# that pattern. The module also guards SECRET_KEY and FIELD_ENCRYPTION_KEY at
+# import time, raising ValueError rather than starting with weak values.
+"remedium_hms/settings_production.py" = ["F403", "F405"]
