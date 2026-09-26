@@ -18,6 +18,7 @@ from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand, CommandError
 from decouple import config
 
+from core.rbac import ROLE_GROUPS
 from staff.models import Staff
 
 TRUTHY = {"1", "true", "yes", "on"}
@@ -25,24 +26,6 @@ TRUTHY = {"1", "true", "yes", "on"}
 DEFAULT_USERNAME = "demo"
 DEFAULT_PASSWORD = "demo1234"
 DEFAULT_ROLE = "ADMIN"
-
-# Maps a Staff role code to the permission Group created by ``create_groups``.
-# Groups are optional here: the UI and API permission classes both fall back
-# to ``staff_profile.role``, so membership is a best-effort enhancement.
-ROLE_GROUPS = {
-    "ADMIN": "Admin",
-    "DOCTOR": "Doctor",
-    "NURSE": "Nurse",
-    "RECEPTIONIST": "Receptionist",
-    "PHARMACIST": "Pharmacist",
-    "LAB_TECH": "Lab Technician",
-    "SURGEON": "Surgeon",
-    "ANESTHESIOLOGIST": "Anesthesiologist",
-    "RADIOLOGIST": "Radiologist",
-    "TECH": "Technician",
-    "SECURITY": "Security",
-    "MAINTENANCE": "Maintenance",
-}
 
 PROTECTED_USERNAMES = {"admin", "root", "superuser"}
 
