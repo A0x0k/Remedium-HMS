@@ -136,6 +136,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Initial commit of project files ([`fbeb48c`])
 
 ### Fixed
+- **hospital**: stop the bed map 500-ing for every user ([`ffc5607`])
 - **demo**: make the published demo account read-only and self-healing ([`b6f045b`])
 - **groups**: resolve permissions whose app label contains an underscore ([`0da7dee`])
 - **medical_records**: add the missing PatientDocument Meta migration ([`80068bc`])

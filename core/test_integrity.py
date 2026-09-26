@@ -17,7 +17,8 @@ import re
 from pathlib import Path
 
 import pytest
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission, User
+from django.core.management import call_command
 from django.urls import get_resolver, reverse
 
 from core.permissions import IsOwnerOrReadOnly
@@ -160,7 +161,6 @@ class TestTemplateUrlsResolve:
 
     def test_doctor_availability_page_renders(self, client, db):
         """The page linked from the nav must not 500."""
-        from django.contrib.auth.models import User
         from staff.models import Staff
 
         user = User.objects.create_user("avail_user", password="pw")
@@ -177,4 +177,142 @@ class TestTemplateUrlsResolve:
         client.force_login(user)
 
         response = client.get(reverse("doctor_availability"))
+        assert response.status_code == 200
+
+
+class TestPublicDemoAccountIsReadOnly:
+    """The public demo account is advertised as a read-only sandbox.
+
+    The credentials are published in the README, so the account must not be
+    able to mutate data. Two independent mechanisms are asserted, because
+    either alone leaks: the Staff role gates the API permission classes in
+    ``core.permissions``, and group membership gates the view layer.
+    """
+
+    DEMO_PASSWORD = "demo1234"
+
+    @pytest.fixture
+    def demo_user(self, db):
+        call_command("create_groups", verbosity=0)
+        call_command("create_demo_user", force=True, verbosity=0)
+        return User.objects.get(username="demo")
+
+    def test_role_and_group_are_read_only(self, demo_user):
+        assert demo_user.staff_profile.role == "VIEWER"
+        assert [g.name for g in demo_user.groups.all()] == ["Demo Viewer"]
+
+    def test_never_django_staff_or_superuser(self, demo_user):
+        assert demo_user.is_staff is False
+        assert demo_user.is_superuser is False
+
+    def test_viewer_role_is_rejected_by_role_gated_api_classes(self):
+        """A new role only isolates the demo account if it is absent from
+        every allow-list. Adding it to one of these would silently re-open
+        the API, so pin the guarantee explicitly."""
+        from core.permissions import (
+            IsAdminOrDoctor,
+            IsAdminUser,
+            IsBillingStaff,
+            IsClinicalStaff,
+            IsLabStaff,
+            IsPharmacyStaff,
+        )
+
+        classes = [
+            IsAdminUser,
+            IsAdminOrDoctor,
+            IsClinicalStaff,
+            IsBillingStaff,
+            IsLabStaff,
+            IsPharmacyStaff,
+        ]
+        for permission_class in classes:
+            allowed = getattr(permission_class, "ALLOWED_ROLES", None) or getattr(
+                permission_class, "MEDICAL_ROLES", []
+            )
+            assert "VIEWER" not in allowed, (
+                f"{permission_class.__name__} would grant the demo account API access"
+            )
+
+    def test_group_grants_no_write_permissions(self, demo_user):
+        group = Group.objects.get(name="Demo Viewer")
+        assert group.permissions.exists()
+        for perm in group.permissions.all():
+            codename = perm.codename
+            for action in ("add", "change", "delete"):
+                assert not codename.startswith(f"{action}_"), codename
+                assert f"_{action}_" not in codename, codename
+
+    def test_can_read_but_cannot_write(self, demo_user, client):
+        client.force_login(demo_user)
+
+        for url_name in ("patient_list", "appointment_list", "prescription_list"):
+            assert client.get(reverse(url_name)).status_code == 200, url_name
+
+        for url_name in ("patient_create", "appointment_create", "surgery_create"):
+            assert client.get(reverse(url_name)).status_code == 403, url_name
+
+    def test_api_endpoints_are_forbidden(self, api_client, demo_user):
+        api_client.force_authenticate(user=demo_user)
+        for url in ("/api/v1/patients/", "/api/v1/appointments/"):
+            assert api_client.get(url).status_code == 403, url
+
+    def test_django_admin_redirects_to_login(self, demo_user, client):
+        client.force_login(demo_user)
+        response = client.get("/admin/patients/patient/")
+        assert response.status_code == 302
+        assert "/admin/login/" in response.headers["Location"]
+
+    def test_rerun_demotes_an_account_seeded_as_admin(self, demo_user):
+        """Deployments created before this change hold ADMIN + the Admin group.
+
+        ``get_or_create`` does not update an existing row, so without explicit
+        demotion the published password would keep full write access forever.
+        """
+        staff = demo_user.staff_profile
+        staff.role = "ADMIN"
+        staff.save()
+        demo_user.groups.clear()
+        demo_user.groups.add(Group.objects.get(name="Admin"))
+
+        call_command("create_demo_user", force=True, verbosity=0)
+
+        staff.refresh_from_db()
+        assert staff.role == "VIEWER"
+        assert [g.name for g in demo_user.groups.all()] == ["Demo Viewer"]
+
+
+class TestGroupPermissionResolution:
+    """``create_groups`` must actually grant every permission it lists."""
+
+    def test_underscored_app_labels_resolve(self, db):
+        """App labels contain underscores, so splitting on the first "_"
+        resolved care_monitoring and medical_records to bogus app labels and
+        those permissions were silently skipped for every group."""
+        call_command("create_groups", verbosity=0)
+        assert Group.objects.get(name="Nurse").permissions.filter(
+            codename="care_monitoring_view_patientcare"
+        ).exists()
+        assert Group.objects.get(name="Doctor").permissions.filter(
+            codename="medical_records_view_document"
+        ).exists()
+
+    def test_django_default_codename_is_granted(self, db):
+        """The bed map requires hospital.view_ward, which is a default
+        permission named without the app prefix."""
+        call_command("create_groups", verbosity=0)
+        viewer = Group.objects.get(name="Demo Viewer")
+        assert viewer.permissions.filter(codename="view_ward").exists()
+
+
+class TestBedMapRenders:
+    def test_occupancy_map_does_not_error(self, client, db):
+        """``Room.ward`` declares no related_name, so the reverse accessor is
+        ``room_set``. Prefetching a non-existent "rooms" raised AttributeError
+        and 500'd the bed map for every user."""
+        user = User.objects.create_user("bedmap_user", password="pw")
+        user.user_permissions.add(Permission.objects.get(codename="view_ward"))
+        client.force_login(user)
+
+        response = client.get(reverse("hospital:occupancy_map"))
         assert response.status_code == 200
