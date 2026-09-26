@@ -47,6 +47,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **staff**: Add tests and improve code quality for staff app ([`07a8222`])
 
 ### Changed
+- **core**: drop an unused import flagged by ruff ([`6432306`])
 - **readme**: record the green suite after the availability fix ([`beacb06`])
 - **core**: cover the authorization and template URL regressions ([`b9777fc`])
 - **readme**: point clone and profile links at the A0x0k account ([`1a067ae`])
