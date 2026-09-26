@@ -1,15 +1,23 @@
 """
 Creates a single, scoped demo account for public showcase deployments.
 
-Unlike ``create_role_users``, this provisions exactly one non-privileged
-account. It is never a Django superuser or staff user, so it cannot reach
-Django's ``/admin/`` site or the ``is_staff`` blanket bypass in
-``core.permissions``.
+Unlike ``create_role_users``, this provisions exactly one read-only account.
+It is never a Django superuser or staff user, so it cannot reach Django's
+``/admin/`` site or the ``is_staff`` blanket bypass in ``core.permissions``.
+
+Access is curtailed in two independent ways, because either one alone leaks:
+
+1. Its Staff role is VIEWER, which appears in no ALLOWED_ROLES/MEDICAL_ROLES
+   list in ``core.permissions``, so every role-gated API endpoint rejects it.
+2. Its group holds only ``*_view_*`` permissions, so ``PermissionRequiredMixin``
+   renders list and detail pages while every add/change/delete view 403s.
 
 The command is opt-in: it refuses to run unless ``DEMO_ACCOUNT_ENABLED=true``
 is set or ``--force`` is passed, so it can never be triggered accidentally.
 
-It is safe to run on every deploy (idempotent) and never deletes data.
+It is safe to run on every deploy (idempotent) and never deletes data. It also
+demotes an account seeded by an earlier version, so redeploying is what applies
+a tightened role to an existing demo user.
 """
 
 import os
@@ -25,7 +33,7 @@ TRUTHY = {"1", "true", "yes", "on"}
 
 DEFAULT_USERNAME = "demo"
 DEFAULT_PASSWORD = "demo1234"
-DEFAULT_ROLE = "ADMIN"
+DEFAULT_ROLE = "VIEWER"
 
 PROTECTED_USERNAMES = {"admin", "root", "superuser"}
 
@@ -117,6 +125,18 @@ class Command(BaseCommand):
         )
         if created:
             self.stdout.write(self.style.SUCCESS(f"Created staff profile: {staff}"))
+        elif staff.role != role:
+            # An account seeded by an earlier version defaulted to ADMIN. The
+            # role drives the API permission classes in core.permissions, so
+            # it has to be corrected or the account stays privileged.
+            previous = staff.role
+            staff.role = role
+            staff.save(update_fields=["role"])
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Demoted demo staff role from {previous} to {role}."
+                )
+            )
         else:
             self.stdout.write(f"Staff profile already exists: {staff}")
 
@@ -126,6 +146,14 @@ class Command(BaseCommand):
             return
         group = Group.objects.filter(name=group_name).first()
         if group:
+            stale = user.groups.exclude(pk=group.pk)
+            for extra in stale:
+                user.groups.remove(extra)
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"Removed demo user from over-privileged group: {extra.name}"
+                    )
+                )
             user.groups.add(group)
             self.stdout.write(self.style.SUCCESS(f"Added to group: {group_name}"))
         else:
