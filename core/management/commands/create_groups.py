@@ -6,6 +6,64 @@ from django.contrib.contenttypes.models import ContentType
 class Command(BaseCommand):
     help = "Creates default user groups and assigns permissions."
 
+    def _resolve_permissions(self, perm_codename):
+        """Resolve a permission string in this command's notation to Permissions.
+
+        Two notations appear in the table above:
+
+        * Custom permissions declared in a model Meta.permissions, whose
+          codename is literally ``<app_label>_<action>_<name>``, e.g.
+          ``patients_view_patient`` or ``medical_records_view_document``.
+          Note the last one is declared on the PatientDocument model, so the
+          trailing segment does not match the model name. The codename is the
+          permission's identity, so match on it directly.
+        * Django's auto-generated permissions, whose codename is just
+          ``<action>_<model>`` (e.g. ``hospital.view_ward``). Views spell these
+          with the app label prefix in ``permission_required``, which collides
+          with the custom form above, so both candidates are returned and the
+          caller grants each one that exists.
+
+        A single entry can legitimately resolve to two distinct permissions,
+        and granting both is what makes a group satisfy views regardless of
+        which spelling they use.
+        """
+        found = []
+        seen = set()
+
+        def _add(perm):
+            if perm is not None and perm.pk not in seen:
+                seen.add(perm.pk)
+                found.append(perm)
+
+        _add(Permission.objects.filter(codename=perm_codename).first())
+
+        # Django's auto-generated naming. App labels contain underscores
+        # (care_monitoring, medical_records), so match the real app labels
+        # longest-first rather than splitting on the first "_".
+        app_labels = sorted(
+            set(ContentType.objects.values_list("app_label", flat=True)),
+            key=len,
+            reverse=True,
+        )
+        for app_label in app_labels:
+            prefix = f"{app_label}_"
+            if not perm_codename.startswith(prefix):
+                continue
+            remainder = perm_codename[len(prefix) :]
+            if "_" not in remainder:
+                continue
+            content_type = ContentType.objects.filter(
+                app_label=app_label, model=remainder.split("_", 1)[1]
+            ).first()
+            if content_type is None:
+                continue
+            _add(
+                Permission.objects.filter(
+                    content_type=content_type, codename=remainder
+                ).first()
+            )
+        return found
+
     def handle(self, *args, **kwargs):
         self.stdout.write("Creating default user groups...")
 
@@ -105,6 +163,20 @@ class Command(BaseCommand):
                 "laboratory_change_labtest",
                 "laboratory_add_labtest",
             ],
+            # Read-only role backing the public demo account. Only *_view_*
+            # codenames, so list and detail pages render but every create,
+            # update and delete view raises PermissionDenied.
+            "Demo Viewer": [
+                "patients_view_patient",
+                "medical_records_view_document",
+                "appointments_view_appointment",
+                "surgery_view_surgery",
+                "care_monitoring_view_patientcare",
+                "pharmacy_view_prescription",
+                "laboratory_view_labtest",
+                "hospital_view_ward",
+                "hospital_view_hospitalservice",
+            ],
         }
 
         for role_name, perms_list in roles.items():
@@ -118,34 +190,15 @@ class Command(BaseCommand):
             group.permissions.clear()
 
             for perm_codename in perms_list:
-                try:
-                    app_label_perm, codename_perm = perm_codename.split("_", 1)
-                    action, model_name = codename_perm.split("_", 1)
-                    content_type = ContentType.objects.get(
-                        app_label=app_label_perm, model=model_name
-                    )
-                    permission = Permission.objects.get(
-                        content_type=content_type, codename=perm_codename
-                    )
-                    group.permissions.add(permission)
-                except ContentType.DoesNotExist:
-                    self.stdout.write(
-                        self.style.WARNING(
-                            f"Content type for app_label={app_label_perm}, model={model_name} not found. Skipping permission {perm_codename}."
-                        )
-                    )
-                except Permission.DoesNotExist:
+                permissions = self._resolve_permissions(perm_codename)
+                if not permissions:
                     self.stdout.write(
                         self.style.WARNING(
                             f"Permission {perm_codename} not found. Skipping."
                         )
                     )
-                except Exception as e:
-                    self.stdout.write(
-                        self.style.ERROR(
-                            f"Error adding permission {perm_codename} to group {role_name}: {e}"
-                        )
-                    )
+                    continue
+                group.permissions.add(*permissions)
 
             self.stdout.write(
                 self.style.SUCCESS(f"Permissions assigned to group '{role_name}'")
