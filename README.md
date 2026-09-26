@@ -16,8 +16,8 @@
 [![DRF](https://img.shields.io/badge/DRF-3.16-A30000?style=flat-square&logo=django&logoColor=white)](https://www.django-rest-framework.org/)
 [![Hosted on Railway](https://img.shields.io/badge/Hosted%20on-Railway-8B5CF6?style=flat-square&logo=railway&logoColor=white)](https://railway.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-184-brightgreen?style=flat-square)](#testing)
-[![Coverage](https://img.shields.io/badge/Coverage-84%25-success?style=flat-square)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-185-brightgreen?style=flat-square)](#testing)
+[![Coverage](https://img.shields.io/badge/Coverage-83%25-success?style=flat-square)](#testing)
 
 <br />
 
@@ -333,9 +333,7 @@ pip install pytest-cov
 pytest --cov=. --cov-report=term-missing
 ```
 
-**Current status:** 184 passing, 84% coverage.
-
-**Known failure:** `staff/tests.py::TestStaffViews::test_doctor_availability_with_permission` — the `/staff/availability/` view raises `FieldError: Cannot resolve keyword 'encounter_set'` because it uses a stale reverse-relation name (the related name is `encounter`). Pre-existing and unrelated to the demo account.
+**Current status:** 185 tests passing, 83% coverage, zero failures.
 
 ---
 
