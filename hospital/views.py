@@ -34,9 +34,12 @@ class OccupancyMapView(
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Prefetch wards with rooms, and rooms with patients
+        # Prefetch wards with rooms, and rooms with patients.
+        # Room.ward declares no related_name, so the reverse accessor is
+        # "room_set"; prefetching "rooms" raises AttributeError and 500s the
+        # page for every user.
         context["wards"] = Ward.objects.prefetch_related(
-            "rooms", "rooms__patient_set"
+            "room_set", "room_set__patient_set"
         ).all()
         return context
 
